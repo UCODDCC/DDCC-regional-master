@@ -1,12 +1,27 @@
-#include <iostream>
+#include <signal.h>
 #include <regional-balancer/kernel/Server.hpp>
 
+
 std::string serverHandlerOrchestrator(std::string payload){
-    return std::string("hello from server! <").append(payload).append(">");
+    std::string response = "+hello from server!<";
+    response.append("response here");
+    response.append(">");
+    return response;
 }
 
+
+Server server(7654, serverHandlerOrchestrator);
+
+void sigHandler(int signum);
+
+
 int main() {
-    printf("test");
-    Server server(7707, serverHandlerOrchestrator);
-    for(;;) server.handleNextConnection();
+    signal(SIGINT, sigHandler);
+    signal(SIGTERM, sigHandler);
+    signal(SIGABRT, sigHandler);
+    while(true) server.handleNextConnection();
+}
+
+void sigHandler (int signum){
+    server.exit();
 }

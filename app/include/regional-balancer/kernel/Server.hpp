@@ -48,11 +48,12 @@ public:
     handlerType handler_;
     Server(int portno, handlerType requestHandler);
     int getConnectionCap() const;
-    void setConnectionCap(unsigned int cap);
+    void setConnectionCap(int cap);
     int getNumberOfConnections() const;
 
     void handleNextConnection();
 
+    void exit();
 };
 
 #endif

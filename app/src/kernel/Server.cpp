@@ -3,10 +3,11 @@
 void handleNextConnectionThreaded(handlerType handler, serverConnection client) {
     char buffer[BUFF_SIZE];
     std::string payload;
-    bzero(buffer, BUFF_SIZE);
-    while (read(client.socket_fd, buffer, BUFF_SIZE) > 0){
+    do{
+        bzero(buffer, BUFF_SIZE);
+        read(client.socket_fd, buffer, BUFF_SIZE);
         payload.append(buffer);
-    }
+    } while (buffer[strlen(buffer)-1]!='>');
 
     std::string response = handler(payload);
 
@@ -16,6 +17,9 @@ void handleNextConnectionThreaded(handlerType handler, serverConnection client) 
             strlen(response.c_str()),
             0
     );
+    #ifdef DEBUG
+        printf("received {%s}%lu\nsending back {%s}:%lu\n", payload.c_str(), strlen(payload.c_str()), response.c_str(), strlen(response.c_str()));
+    #endif
 
     close(client.socket_fd);
 }
@@ -66,11 +70,16 @@ int Server::getConnectionCap() const {
     return this->connectionCap_;
 }
 
-void Server::setConnectionCap(unsigned int cap) {
+void Server::setConnectionCap(int cap) {
     if (cap > 0)
         this->connectionCap_ = cap;
 }
 
 int Server::getNumberOfConnections() const {
     return this->threads_.size();
+}
+
+void Server::exit() {
+    close(this->server_fd_);
+    printf("server closed\n");
 }
