@@ -3,7 +3,10 @@ cmake_minimum_required (VERSION 2.8.11)
 project (DDCD-regional-master)
 
 set(SOURCES
-    app/src/kernel/Server.cpp
+        app/src/kernel/Server.cpp
+        app/src/kernel/Client.cpp
+        app/src/handlers/mainHandler.cpp
+        app/src/handlers/matrixHandler.cpp
 )
 
 set(TARGET app/src/app.cpp)

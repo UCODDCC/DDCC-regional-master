@@ -13,13 +13,13 @@
 #include <stdexcept>
 #include <thread>
 
-#define BUFF_SIZE 2048
+#define SERVER_BUFF_SIZE 2048
 
 
 /**
  * All the handlers must follow this type
  */
-typedef std::string (*handlerType)(std::string);
+typedef std::string (*handlerType)(const std::string&);
 
 struct serverConnection {
     int socket_fd = -1;

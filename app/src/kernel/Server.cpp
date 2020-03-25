@@ -1,11 +1,11 @@
 #include <regional-balancer/kernel/Server.hpp>
 
 void handleNextConnectionThreaded(handlerType handler, serverConnection client) {
-    char buffer[BUFF_SIZE];
+    char buffer[SERVER_BUFF_SIZE];
     std::string payload;
     do{
-        bzero(buffer, BUFF_SIZE);
-        read(client.socket_fd, buffer, BUFF_SIZE);
+        bzero(buffer, SERVER_BUFF_SIZE);
+        read(client.socket_fd, buffer, SERVER_BUFF_SIZE);
         payload.append(buffer);
     } while (buffer[strlen(buffer)-1]!='>');
 
