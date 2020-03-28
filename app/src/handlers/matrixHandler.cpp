@@ -1,23 +1,11 @@
 #include <regional-balancer/handlers/matrixHandler.hpp>
 
-std::string matrixMultiplicationHanlder(const std::string& payload) {
-    unsigned long int op_start, opcode_start, opcode_length, subopcode_start, subopcode_length;
-    unsigned long int meta_start, meta_length;
+std::string matrixMultiplicationHanlder(const std::string& message) {
     std::string size_a, size_b, size_ax, size_ay, size_bx, size_by;
     unsigned long int size_sepparator;
+    int resource_location;
 
-    op_start = payload.find('[') + 1;
-
-    opcode_start = op_start;
-    opcode_length = payload.find('|', opcode_start) - op_start;
-
-    subopcode_start = payload.find('|', opcode_start + opcode_length) + 1;
-    subopcode_length = payload.find('|', subopcode_start) - subopcode_start;
-
-    meta_start = payload.find('|', subopcode_start + subopcode_length) + 1;
-    meta_length = payload.find(']', meta_start) - meta_start;
-
-    std::string metadata = payload.substr(meta_start, meta_length);
+    std::string metadata = getMetaFromMessage(message);
 
     size_sepparator = metadata.find(',');
     size_a = metadata.substr(0, size_sepparator);
@@ -35,30 +23,19 @@ std::string matrixMultiplicationHanlder(const std::string& payload) {
     if (atoi(size_ay.c_str()) != atoi(size_bx.c_str()))
         return std::string("-matrix sizes are incompatibles<").append(metadata).append(">");
 
+    if (requestResource(getOpCodeFromMessage(message), &resource_location) != 0)
+        return std::string("-timeout<resource reservation request wasn't responded>");
+
     return std::string("+<matrix multiplication handler>");
 }
 
-std::string matrixHandler(const std::string& payload){
-    unsigned long int op_start, opcode_start, opcode_length, subopcode_start, subopcode_length;
-    // unsigned long int meta_start, meta_length;
-    op_start = payload.find('[') + 1;
-
-    opcode_start = op_start;
-    opcode_length = payload.find('|', opcode_start) - op_start;
-
-    subopcode_start = payload.find('|', opcode_start + opcode_length) + 1;
-    subopcode_length = payload.find('|', subopcode_start) - subopcode_start;
-
-    // meta_start = payload.find('|', subopcode_start + subopcode_length) + 1;
-    // meta_length = payload.find(']', meta_start) - meta_start;
-
-    std::string subopcode = payload.substr(subopcode_start, subopcode_length);
-    // std::string metadata = payload.substr(meta_start, meta_length);
+std::string matrixHandler(const std::string& message){
+    std::string subopcode = getSubOpCodeFromMessage(message);
     #ifdef DEBUG
         printf("sub-opcode:{%s}\n", subopcode.c_str());
     #endif
     if (subopcode == "multiplication")
-        return matrixMultiplicationHanlder(payload);
+        return matrixMultiplicationHanlder(message);
 
     return std::string("-undefined matrix sub-operation<").append(subopcode).append(">");
 }

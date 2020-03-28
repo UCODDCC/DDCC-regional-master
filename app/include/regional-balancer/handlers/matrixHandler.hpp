@@ -2,9 +2,11 @@
 #define _DDCD_HANDLER_MATRIX_HANDLER_
 
 #include <string>
+#include <regional-balancer/utils.hpp>
+#include <regional-balancer/requesters/resourceRequester.hpp>
 
-std::string matrixMultiplicationHanlder(const std::string& payload);
+std::string matrixMultiplicationHanlder(const std::string& message);
 
-std::string matrixHandler(const std::string& payload);
+std::string matrixHandler(const std::string& message);
 
 #endif

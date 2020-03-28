@@ -4,10 +4,10 @@
 
 void *listenThread(void* params) {
     auto* thread_params = (struct listenThreadParams*) params;
-    char buffer[CLIENT_BUFFER_SIZE];
+    char buffer[DDCD_CLIENT_BUFFER_SIZE];
     do{
-        bzero(buffer, CLIENT_BUFFER_SIZE);
-        read(thread_params->socket, buffer, CLIENT_BUFFER_SIZE);
+        bzero(buffer, DDCD_CLIENT_BUFFER_SIZE);
+        read(thread_params->socket, buffer, DDCD_CLIENT_BUFFER_SIZE);
         thread_params->payload->append(buffer);
     } while (buffer[strlen(buffer)-1]!='>');
     pthread_exit(nullptr);
@@ -51,14 +51,15 @@ std::string Client::listen(int timeout) {
     struct timespec timeout_{};
     std::string payload;
     pthread_t thread;
-    listenThreadParams params {
-        .socket = this->socket_fd_,
-        .payload = &payload
+    listenThreadParams params{
+            .socket = this->socket_fd_,
+            .payload = &payload
     };
 
-    pthread_create(&thread, nullptr, listenThread, (void*) &params);
+    pthread_create(&thread, nullptr, listenThread, (void *) &params);
     for (; timeout > 0; --timeout) {
-        timeout_.tv_nsec = 0; timeout_.tv_sec = time(nullptr) + 1;
+        timeout_.tv_nsec = 0;
+        timeout_.tv_sec = time(nullptr) + 1;
         retval = pthread_timedjoin_np(thread, nullptr, &timeout_);
         if (retval == 0)
             return payload;

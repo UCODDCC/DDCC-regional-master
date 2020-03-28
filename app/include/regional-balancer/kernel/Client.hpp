@@ -14,7 +14,9 @@
 #include <pthread.h>
 #include <time.h>
 
-#define CLIENT_BUFFER_SIZE 2048
+#include <regional-balancer/configuration.hpp>
+
+
 struct listenThreadParams {
     int socket;
     std::string* payload;
@@ -38,7 +40,6 @@ public:
     std::string listen(int timeout = 60);
 
     int closeConnection();
-
 };
 
 #endif
