@@ -16,6 +16,9 @@ int main() {
     signal(SIGABRT, sigHandler);
     server.handleNextConnection();
     server.handleNextConnection();
+    server.handleNextConnection();
+    server.handleNextConnection();
+    server.handleNextConnection();
     server.exit();
 }
 

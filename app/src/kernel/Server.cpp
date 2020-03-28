@@ -9,6 +9,10 @@ void handleNextConnectionThreaded(handlerType handler, serverConnection client) 
         payload.append(buffer);
     } while (buffer[strlen(buffer)-1]!='>');
 
+    #ifdef DEBUG
+        printf("handleNextConnectionThreaded: received {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
+    #endif
+
     std::string response = handler(payload);
 
     send(
@@ -18,7 +22,7 @@ void handleNextConnectionThreaded(handlerType handler, serverConnection client) 
             0
     );
     #ifdef DEBUG
-        printf("received {%s}%lu\nsending back {%s}:%lu\n", payload.c_str(), strlen(payload.c_str()), response.c_str(), strlen(response.c_str()));
+        printf("handleNextConnectionThreaded: sending back {%s}:%lu\n", response.c_str(), strlen(response.c_str()));
     #endif
 
     close(client.socket_fd);

@@ -4,7 +4,7 @@ std::string matrixMultiplicationHanlder(const std::string& message) {
     std::string size_a, size_b, size_ax, size_ay, size_bx, size_by;
     unsigned long int size_sepparator;
     int resource_location;
-
+    std::string response;
     std::string metadata = getMetaFromMessage(message);
 
     size_sepparator = metadata.find(',');
@@ -17,22 +17,27 @@ std::string matrixMultiplicationHanlder(const std::string& message) {
     size_by = size_b.substr(size_b.find('x') + 1, size_b.size());
 
     #ifdef DEBUG
-        printf("size: a:{%sx%s}, b:{%sx%s}\n", size_ax.c_str(), size_ay.c_str(), size_bx.c_str(), size_by.c_str());
+        printf("matrixMultiplicationHanlder: size: a:{%sx%s}, b:{%sx%s}\n", size_ax.c_str(), size_ay.c_str(), size_bx.c_str(), size_by.c_str());
     #endif
 
     if (atoi(size_ay.c_str()) != atoi(size_bx.c_str()))
         return std::string("-matrix sizes are incompatibles<").append(metadata).append(">");
 
-    if (requestResource(getOpCodeFromMessage(message), &resource_location) != 0)
-        return std::string("-timeout<resource reservation request wasn't responded>");
+    if (requestResource(getOpCodeFromMessage(message), &response, &resource_location) != 0)
+        return response;
 
-    return std::string("+<matrix multiplication handler>");
+    #ifdef DEBUG
+        printf("matrixMultiplicationHanlder: resource location at{%i}\n", resource_location);
+    #endif
+    Client client(DDCD_CONTAINER_ORCHESTRATOR_ADDRESS, resource_location);
+    client.sendMessage(message);
+    return client.listen();
 }
 
 std::string matrixHandler(const std::string& message){
     std::string subopcode = getSubOpCodeFromMessage(message);
     #ifdef DEBUG
-        printf("sub-opcode:{%s}\n", subopcode.c_str());
+        printf("matrixHandler: sub-opcode:{%s}\n", subopcode.c_str());
     #endif
     if (subopcode == "multiplication")
         return matrixMultiplicationHanlder(message);
