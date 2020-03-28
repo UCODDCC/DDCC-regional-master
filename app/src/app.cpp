@@ -2,10 +2,10 @@
 
 #include <regional-balancer/kernel/Server.hpp>
 #include <regional-balancer/handlers/mainHandler.hpp>
+#include <regional-balancer/configuration.hpp>
 
 
-
-Server server(7654, mainHandler);
+Server server(DDCD_REGIONAL_MASTER_PORT, mainHandler);
 
 void sigHandler(int signum);
 

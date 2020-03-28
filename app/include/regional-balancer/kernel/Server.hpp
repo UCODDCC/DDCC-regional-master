@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <thread>
 
-#define SERVER_BUFF_SIZE 2048
+#include <regional-balancer/configuration.hpp>
 
 
 /**
