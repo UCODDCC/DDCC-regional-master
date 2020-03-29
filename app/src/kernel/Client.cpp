@@ -5,11 +5,13 @@
 void *listenThread(void* params) {
     auto* thread_params = (struct listenThreadParams*) params;
     char buffer[DDCD_CLIENT_BUFFER_SIZE];
+    // read the message from the file descriptor until the terminating character appears
     do{
         bzero(buffer, DDCD_CLIENT_BUFFER_SIZE);
         read(thread_params->socket, buffer, DDCD_CLIENT_BUFFER_SIZE);
         thread_params->payload->append(buffer);
     } while (buffer[strlen(buffer)-1]!='>');
+    // exit the thread and join the main process
     pthread_exit(nullptr);
 }
 
@@ -55,19 +57,23 @@ std::string Client::listen(int timeout) {
             .socket = this->socket_fd_,
             .payload = &payload
     };
-
+    // creates the thread and sets a timedout thread cancel
     pthread_create(&thread, nullptr, listenThread, (void *) &params);
     for (; timeout > 0; --timeout) {
         timeout_.tv_nsec = 0;
         timeout_.tv_sec = time(nullptr) + 1;
         retval = pthread_timedjoin_np(thread, nullptr, &timeout_);
+        // if the thread has joined in time, copy the response into the payload at the struct
         if (retval == 0)
             return payload;
     }
+    // thread has failed to join, force the exit at the thread and copy a timeout error at the payload
     pthread_cancel(thread);
     return std::string("-timeout<can not get message from orchestrator>");
 }
 
 int Client::closeConnection() {
-    return this->sendMessage("+<exit>");
+    int retval = this->sendMessage("+<exit>");
+    close(this->socket_fd_);
+    return retval;
 }
