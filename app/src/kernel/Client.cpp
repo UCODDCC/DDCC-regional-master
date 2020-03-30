@@ -59,14 +59,12 @@ std::string Client::listen(int timeout) {
     };
     // creates the thread and sets a timedout thread cancel
     pthread_create(&thread, nullptr, listenThread, (void *) &params);
-    for (; timeout > 0; --timeout) {
-        timeout_.tv_nsec = 0;
-        timeout_.tv_sec = time(nullptr) + 1;
-        retval = pthread_timedjoin_np(thread, nullptr, &timeout_);
-        // if the thread has joined in time, copy the response into the payload at the struct
-        if (retval == 0)
-            return payload;
-    }
+    timeout_.tv_nsec = 0;
+    timeout_.tv_sec = ((int)time(nullptr)) + timeout;
+    retval = pthread_timedjoin_np(thread, nullptr, &timeout_);
+    // if the thread has joined in time, copy the response into the payload at the struct
+    if (retval == 0)
+        return payload;
     // thread has failed to join, force the exit at the thread and copy a timeout error at the payload
     pthread_cancel(thread);
     return std::string("-timeout<can not get message from orchestrator>");
