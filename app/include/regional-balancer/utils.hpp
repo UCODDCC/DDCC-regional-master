@@ -23,5 +23,7 @@ std::string getErrorFromMessage(const std::string& message);
 std::string getOpCodeFromMessage(const std::string& message);
 std::string getSubOpCodeFromMessage(const std::string& message);
 std::string getMetaFromMessage(const std::string& message);
+std::string getAddressFromLocation(const std::string& message);
+std::string getPortFromLocation(const std::string& message);
 
 #endif

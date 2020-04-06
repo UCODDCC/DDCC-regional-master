@@ -3,7 +3,7 @@
 std::string matrixMultiplicationHandler(const std::string& message) {
     std::string size_a, size_b, size_ax, size_ay, size_bx, size_by;
     unsigned long int size_separator;
-    int resource_location;
+    std::string resource_location;
     std::string response;
     std::string metadata = getMetaFromMessage(message);
 
@@ -29,10 +29,11 @@ std::string matrixMultiplicationHandler(const std::string& message) {
         return response;
 
     #ifdef DEBUG
-        printf("matrixMultiplicationHandler: resource location at{%i}\n", resource_location);
+        printf("matrixMultiplicationHandler: resource location at{%s}\n", resource_location.c_str());
+        printf("matrixMultiplicationHandler: sending {%s} to container\n", message.c_str());
     #endif
     // send the message to the container and waits for the result or timeout
-    Client client(DDCD_CONTAINER_ORCHESTRATOR_ADDRESS, resource_location);
+    Client client(getAddressFromLocation(resource_location), std::atoi(getPortFromLocation(resource_location).c_str()));
     client.sendMessage(message);
     // return the response or error
     return client.listen();

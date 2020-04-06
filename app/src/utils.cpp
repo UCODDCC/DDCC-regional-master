@@ -55,7 +55,15 @@ std::string getMetaFromMessage(const std::string& message) {
     subopcode_length = operation.find('|', subopcode_start) - subopcode_start;
 
     meta_start = operation.find('|', subopcode_start + subopcode_length) + 1;
-    meta_length = operation.size() - meta_start - 1;
+    meta_length = operation.size() - meta_start;
 
     return operation.substr(meta_start, meta_length);
+}
+
+std::string getAddressFromLocation(const std::string& message) {
+    return message.substr(0, message.find(':'));
+}
+
+std::string getPortFromLocation(const std::string& message) {
+    return message.substr(message.find(':') + 1, message.length());
 }
