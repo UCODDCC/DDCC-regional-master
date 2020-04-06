@@ -14,12 +14,7 @@ int main() {
     signal(SIGINT, sigHandler);
     signal(SIGTERM, sigHandler);
     signal(SIGABRT, sigHandler);
-    server.handleNextConnection();
-    server.handleNextConnection();
-    server.handleNextConnection();
-    server.handleNextConnection();
-    server.handleNextConnection();
-    server.exit();
+    while (true) server.handleNextConnection();
 }
 
 void sigHandler (int signum){
