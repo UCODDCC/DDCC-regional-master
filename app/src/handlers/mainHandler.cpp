@@ -9,5 +9,8 @@ std::string mainHandler(const std::string& message) {
     if (opcode == "matrix")
         return matrixHandler(message);
 
+    if (opcode == "vector")
+        return vectorHandler(message);
+
     return std::string("-undefined opcode<").append(opcode).append(">");
 }

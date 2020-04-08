@@ -47,5 +47,6 @@ std::string matrixHandler(const std::string& message){
     if (subopcode == "multiplication")
         return matrixMultiplicationHandler(message);
 
+
     return std::string("-undefined matrix sub-operation<").append(subopcode).append(">");
 }

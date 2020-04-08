@@ -2,6 +2,7 @@
 #define _DDCD_HANDLER_MAIN_HANDLER_
 
 #include <regional-balancer/handlers/matrixHandler.hpp>
+#include <regional-balancer/handlers/vectorHandler.hpp>
 #include <regional-balancer/utils.hpp>
 
 /**

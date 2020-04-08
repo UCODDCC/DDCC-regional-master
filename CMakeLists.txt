@@ -7,6 +7,7 @@ set(SOURCES
         app/src/kernel/Client.cpp
         app/src/handlers/mainHandler.cpp
         app/src/handlers/matrixHandler.cpp
+        app/src/handlers/vectorHandler.cpp
         app/src/requesters/resourceRequester.cpp
         app/src/utils.cpp
 )
