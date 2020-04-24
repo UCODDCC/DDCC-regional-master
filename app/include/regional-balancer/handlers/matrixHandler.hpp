@@ -2,7 +2,6 @@
 #define _DDCD_HANDLER_MATRIX_HANDLER_
 
 #include <string>
-#include <regional-balancer/configuration.hpp>
 #include <regional-balancer/utils.hpp>
 #include <regional-balancer/requesters/resourceRequester.hpp>
 #include <regional-balancer/kernel/Client.hpp>

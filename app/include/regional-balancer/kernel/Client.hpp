@@ -14,7 +14,6 @@
 #include <pthread.h>
 #include <time.h>
 
-#include <regional-balancer/configuration.hpp>
 
 /**
  * This struct holds the necessary parameters for the listenThread function
@@ -61,7 +60,7 @@ public:
      * @param timeout time in seconds
      * @return server payload
      */
-    std::string listen(int timeout = DDCC_LISTEN_TIME_OUT);
+    std::string listen(int timeout = atoi(getenv("DDCC_LISTEN_TIME_OUT")));
 
     /**
      * sends a exit message and closes the socket
