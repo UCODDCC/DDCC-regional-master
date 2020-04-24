@@ -6,7 +6,9 @@ int requestResource(const std::string& resource_name, std::string* response, std
     std::string request = std::string("+<").append(resource_name).append(">");
     client->sendMessage(request);
     *response = client->listen(timeout);
-    printf("requestResource: response {%s}\n", response->c_str());
+    #ifdef DEBUG
+        fprintf(stderr, "requestResource: response {%s}\n", response->c_str());
+    #endif
     *resource_location = "";
     if ((*response)[0]=='+'){
         *resource_location = getPayloadFromMessage(*response);

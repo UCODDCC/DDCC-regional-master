@@ -61,7 +61,7 @@ public:
      * @param timeout time in seconds
      * @return server payload
      */
-    std::string listen(int timeout = 60);
+    std::string listen(int timeout = DDCC_LISTEN_TIME_OUT);
 
     /**
      * sends a exit message and closes the socket

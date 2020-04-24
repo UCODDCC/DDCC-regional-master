@@ -1,7 +1,6 @@
 #include <regional-balancer/kernel/Client.hpp>
 
 
-
 void *listenThread(void* params) {
     auto* thread_params = (struct listenThreadParams*) params;
     char buffer[DDCD_CLIENT_BUFFER_SIZE];
@@ -34,7 +33,7 @@ Client::Client(const std::string& addr, int portno) {
         );
         // TODO: finish error
         if (ret_val == -1){
-            fprintf(stderr, "ERROR,Server cant be found.");
+            fprintf(stderr, "Client::Client: ERROR,Server cant be found.");
         }
     }
 }
@@ -57,7 +56,7 @@ std::string Client::listen(int timeout) {
             .socket = this->socket_fd_,
             .payload = &payload
     };
-    // creates the thread and sets a timedout thread cancel
+    // creates the thread and sets a timed out thread cancel
     pthread_create(&thread, nullptr, listenThread, (void *) &params);
     timeout_.tv_nsec = 0;
     timeout_.tv_sec = ((int)time(nullptr)) + timeout;
@@ -67,6 +66,9 @@ std::string Client::listen(int timeout) {
         return payload;
     // thread has failed to join, force the exit at the thread and copy a timeout error at the payload
     pthread_cancel(thread);
+    #ifdef DEBUG
+        fprintf(stderr, "Client::listen: connection timed out\n");
+    #endif
     return std::string("-timeout<can not get message from orchestrator>");
 }
 

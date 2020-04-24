@@ -16,7 +16,7 @@ std::string vectorAdditionHandler(const std::string& message) {
 std::string vectorHandler(const std::string& message){
     std::string subopcode = getSubOpCodeFromMessage(message);
     #ifdef DEBUG
-        printf("vectorHandler: sub-opcode:{%s}\n", subopcode.c_str());
+        fprintf(stderr, "vectorHandler: sub-opcode:{%s}\n", subopcode.c_str());
     #endif
     if (subopcode == "addition")
         return vectorAdditionHandler(message);
