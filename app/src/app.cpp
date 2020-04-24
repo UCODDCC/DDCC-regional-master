@@ -4,7 +4,6 @@
 #include <regional-balancer/handlers/mainHandler.hpp>
 #include <regional-balancer/configuration.hpp>
 
-
 Server server(DDCD_REGIONAL_MASTER_PORT, mainHandler);
 
 void sigHandler(int signum);

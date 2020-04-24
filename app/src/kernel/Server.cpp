@@ -12,7 +12,7 @@ void handleNextConnectionThreaded(handlerType handler, serverConnection client) 
     } while (buffer[strlen(buffer)-1]!='>');
 
     #ifdef DEBUG
-        printf("handleNextConnectionThreaded: received {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
+        fprintf(stderr, "handleNextConnectionThreaded: received {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
     #endif
     // process the message via the handler
     std::string response = handler(payload);
@@ -25,7 +25,7 @@ void handleNextConnectionThreaded(handlerType handler, serverConnection client) 
             0
     );
     #ifdef DEBUG
-        printf("handleNextConnectionThreaded: sending back {%s}:%lu\n", response.c_str(), strlen(response.c_str()));
+        fprintf(stderr, "handleNextConnectionThreaded: sending back {%s}:%lu\n", response.c_str(), strlen(response.c_str()));
     #endif
     // close the client socket
     close(client.socket_fd);
@@ -80,5 +80,5 @@ void Server::handleNextConnection() {
 
 void Server::exit() {
     close(this->server_fd_);
-    printf("server closed\n");
+    fprintf(stderr, "server closed\n");
 }

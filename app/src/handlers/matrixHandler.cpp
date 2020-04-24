@@ -18,7 +18,7 @@ std::string matrixMultiplicationHandler(const std::string& message) {
     size_by = size_b.substr(size_b.find('x') + 1, size_b.size());
 
     #ifdef DEBUG
-        printf("matrixMultiplicationHandler: size: a:{%sx%s}, b:{%sx%s}\n", size_ax.c_str(), size_ay.c_str(), size_bx.c_str(), size_by.c_str());
+        fprintf(stderr, "matrixMultiplicationHandler: size: a:{%sx%s}, b:{%sx%s}\n", size_ax.c_str(), size_ay.c_str(), size_bx.c_str(), size_by.c_str());
     #endif
 
     if (atoi(size_ay.c_str()) != atoi(size_bx.c_str()))
@@ -29,8 +29,8 @@ std::string matrixMultiplicationHandler(const std::string& message) {
         return response;
 
     #ifdef DEBUG
-        printf("matrixMultiplicationHandler: resource location at{%s}\n", resource_location.c_str());
-        printf("matrixMultiplicationHandler: sending {%s} to container\n", message.c_str());
+        fprintf(stderr, "matrixMultiplicationHandler: resource location at{%s}\n", resource_location.c_str());
+        fprintf(stderr, "matrixMultiplicationHandler: sending {%s} to container\n", message.c_str());
     #endif
     // send the message to the container and waits for the result or timeout
     Client client(getAddressFromLocation(resource_location), std::atoi(getPortFromLocation(resource_location).c_str()));
@@ -42,7 +42,7 @@ std::string matrixMultiplicationHandler(const std::string& message) {
 std::string matrixHandler(const std::string& message){
     std::string subopcode = getSubOpCodeFromMessage(message);
     #ifdef DEBUG
-        printf("matrixHandler: sub-opcode:{%s}\n", subopcode.c_str());
+        fprintf(stderr, "matrixHandler: sub-opcode:{%s}\n", subopcode.c_str());
     #endif
     if (subopcode == "multiplication")
         return matrixMultiplicationHandler(message);

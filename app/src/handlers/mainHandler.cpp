@@ -3,7 +3,7 @@
 std::string mainHandler(const std::string& message) {
     std::string opcode = getOpCodeFromMessage(message);
     #ifdef DEBUG
-        printf("opcode:{%s}\n", opcode.c_str());
+        fprintf(stderr,"opcode:{%s}\n", opcode.c_str());
     #endif
 
     if (opcode == "matrix")
