@@ -2,9 +2,8 @@
 
 #include <regional-balancer/kernel/Server.hpp>
 #include <regional-balancer/handlers/mainHandler.hpp>
-#include <regional-balancer/configuration.hpp>
 
-Server server(DDCD_REGIONAL_MASTER_PORT, mainHandler);
+Server server(atoi(getenv("DDCC_REGIONAL_MASTER_PORT")), mainHandler);
 
 void sigHandler(int signum);
 

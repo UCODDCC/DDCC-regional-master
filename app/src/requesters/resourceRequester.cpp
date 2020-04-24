@@ -2,12 +2,13 @@
 
 
 int requestResource(const std::string& resource_name, std::string* response, std::string* resource_location, int timeout){
-    auto* client = new Client(DDCD_CONTAINER_ORCHESTRATOR_ADDRESS, DDCD_CONTAINER_ORCHESTRATOR_PORT);
+    auto* client = new Client(getenv("DDCC_CONTAINER_ORCHESTRATOR_ADDRESS"), atoi(getenv("DDCC_CONTAINER_ORCHESTRATOR_PORT")));
     std::string request = std::string("+<").append(resource_name).append(">");
     client->sendMessage(request);
     *response = client->listen(timeout);
     #ifdef DEBUG
-        fprintf(stderr, "requestResource: response {%s}\n", response->c_str());
+        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 1)
+            fprintf(stderr, "requestResource: response {%s}\n", response->c_str());
     #endif
     *resource_location = "";
     if ((*response)[0]=='+'){

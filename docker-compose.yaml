@@ -5,3 +5,5 @@ services:
     restart: on-failure
     ports:
       - 0.0.0.0:7654:7654
+    env_file:
+      - app/.env

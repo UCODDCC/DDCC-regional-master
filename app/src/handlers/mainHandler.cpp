@@ -3,7 +3,8 @@
 std::string mainHandler(const std::string& message) {
     std::string opcode = getOpCodeFromMessage(message);
     #ifdef DEBUG
-        fprintf(stderr,"opcode:{%s}\n", opcode.c_str());
+        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 0)
+            fprintf(stderr,"opcode:{%s}\n", opcode.c_str());
     #endif
 
     if (opcode == "matrix")
