@@ -5,12 +5,10 @@ project (DDCD-regional-master)
 set(SOURCES
         app/src/kernel/Server.cpp
         app/src/kernel/Client.cpp
-        app/src/handlers/mainHandler.cpp
-        app/src/handlers/matrixHandler.cpp
-        app/src/handlers/vectorHandler.cpp
         app/src/requesters/resourceRequester.cpp
         app/src/utils.cpp
-)
+        app/src/handlers/resourceHandler.cpp
+        )
 
 set(TARGET app/src/app.cpp)
 

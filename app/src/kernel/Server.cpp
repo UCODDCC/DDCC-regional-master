@@ -1,4 +1,4 @@
-#include <regional-balancer/kernel/Server.hpp>
+#include <regional-master/kernel/Server.hpp>
 
 void handleNextConnectionThreaded(handlerType handler, serverConnection client) {
     char buffer[DDCD_SERVER_BUFF_SIZE];

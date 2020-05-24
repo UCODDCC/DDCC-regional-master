@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <thread>
 
-#include <regional-balancer/configuration.hpp>
+#include <regional-master/configuration.hpp>
 
 /**
  * All the handlers must follow this type

@@ -1,10 +1,10 @@
 #include <signal.h>
 
-#include <regional-balancer/kernel/Server.hpp>
-#include <regional-balancer/handlers/mainHandler.hpp>
-#include <regional-balancer/configuration.hpp>
+#include <regional-master/kernel/Server.hpp>
+#include <regional-master/handlers/resourceHandler.hpp>
+#include <regional-master/configuration.hpp>
 
-Server server(DDCD_REGIONAL_MASTER_PORT, mainHandler);
+Server server(DDCD_REGIONAL_MASTER_PORT, resourceHandler);
 
 void sigHandler(int signum);
 

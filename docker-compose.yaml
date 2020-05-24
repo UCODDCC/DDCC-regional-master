@@ -1,7 +1,11 @@
 version: '3.7'
 services:
   regional_manager:
-    build: .
+    container_name: regional_manager
+    image: regional_manager:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: on-failure
     ports:
       - 0.0.0.0:7654:7654

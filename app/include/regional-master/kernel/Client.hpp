@@ -14,7 +14,7 @@
 #include <pthread.h>
 #include <time.h>
 
-#include <regional-balancer/configuration.hpp>
+#include <regional-master/configuration.hpp>
 
 /**
  * This struct holds the necessary parameters for the listenThread function
