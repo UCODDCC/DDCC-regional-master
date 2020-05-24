@@ -8,7 +8,6 @@ Server server(DDCD_REGIONAL_MASTER_PORT, resourceHandler);
 
 void sigHandler(int signum);
 
-
 int main() {
     signal(SIGINT, sigHandler);
     signal(SIGTERM, sigHandler);

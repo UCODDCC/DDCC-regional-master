@@ -16,6 +16,7 @@
 
 #include <regional-master/configuration.hpp>
 
+
 /**
  * This struct holds the necessary parameters for the listenThread function
  * the server socket and a pointer to the future server message
@@ -61,7 +62,7 @@ public:
      * @param timeout time in seconds
      * @return server payload
      */
-    std::string listen(int timeout = DDCC_LISTEN_TIME_OUT);
+    std::string listen(int timeout = atoi(getenv("DDCC_LISTEN_TIME_OUT")));
 
     /**
      * sends a exit message and closes the socket

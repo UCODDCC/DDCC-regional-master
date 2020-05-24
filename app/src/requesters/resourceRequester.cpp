@@ -2,6 +2,7 @@
 
 
 int requestResource(const std::string& resource_name, std::string* response, std::string* resource_location, int timeout){
+<<<<<<< HEAD
     Client* client;
     if (DDCC_USE_REGIONAL_BALANCER)
         client = new Client(DDCD_REGIONAL_BALANCER_ADDRESS, DDCD_REGIONAL_BALANCER_PORT);
@@ -12,7 +13,8 @@ int requestResource(const std::string& resource_name, std::string* response, std
     client->sendMessage(request);
     *response = client->listen(timeout);
     #ifdef DEBUG
-        fprintf(stderr, "requestResource: response {%s}\n", response->c_str());
+        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 1)
+            fprintf(stderr, "requestResource: response {%s}\n", response->c_str());
     #endif
     *resource_location = "";
     if ((*response)[0]=='+'){

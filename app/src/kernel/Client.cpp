@@ -3,11 +3,11 @@
 
 void *listenThread(void* params) {
     auto* thread_params = (struct listenThreadParams*) params;
-    char buffer[DDCD_CLIENT_BUFFER_SIZE];
+    char buffer[atoi(getenv("DDCC_CLIENT_BUFFER_SIZE"))];
     // read the message from the file descriptor until the terminating character appears
     do{
-        bzero(buffer, DDCD_CLIENT_BUFFER_SIZE);
-        read(thread_params->socket, buffer, DDCD_CLIENT_BUFFER_SIZE);
+        bzero(buffer,atoi(getenv("DDCC_CLIENT_BUFFER_SIZE")));
+        read(thread_params->socket, buffer, atoi(getenv("DDCC_CLIENT_BUFFER_SIZE")));
         thread_params->payload->append(buffer);
     } while (buffer[strlen(buffer)-1]!='>');
     // exit the thread and join the main process
@@ -67,7 +67,8 @@ std::string Client::listen(int timeout) {
     // thread has failed to join, force the exit at the thread and copy a timeout error at the payload
     pthread_cancel(thread);
     #ifdef DEBUG
-        fprintf(stderr, "Client::listen: connection timed out\n");
+        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 0)
+            fprintf(stderr, "Client::listen: connection timed out\n");
     #endif
     return std::string("-timeout<can not get message from orchestrator>");
 }
