@@ -2,9 +2,10 @@
 #define _DDCD_HANDLER_MAIN_HANDLER_
 
 #include <string>
+#include <lwcpps>
 #include <regional-master/utils.hpp>
 #include <regional-master/requesters/resourceRequester.hpp>
-#include <regional-master/kernel/Client.hpp>
+
 
 /**
  * first stage of the handling process, this function will parse the message and depending on the operation code, will

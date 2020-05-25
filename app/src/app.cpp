@@ -1,10 +1,10 @@
 #include <signal.h>
 
-#include <regional-master/kernel/Server.hpp>
+#include <lwcpps>
 #include <regional-master/handlers/resourceHandler.hpp>
 #include <regional-master/configuration.hpp>
 
-Server server(DDCD_REGIONAL_MASTER_PORT, resourceHandler);
+LWServer server(resourceHandler, DDCD_REGIONAL_MASTER_PORT);
 
 void sigHandler(int signum);
 

@@ -13,11 +13,9 @@ std::string resourceHandler(const std::string& message) {
         return response; // error on response
     }
 
-    Client client(getAddressFromLocation(resource_location), std::atoi(getPortFromLocation(resource_location).c_str()));
+    LWClient client(getAddressFromLocation(resource_location), std::atoi(getPortFromLocation(resource_location).c_str()));
     // send the message to the working node
     client.sendMessage(message);
     // return the working node response
-    response = client.listen();
-    client.closeConnectionWithoutMessage();
-    return response;
+    return client.listenAndExit();
 }
