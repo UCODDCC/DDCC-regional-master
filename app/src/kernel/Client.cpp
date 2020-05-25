@@ -39,6 +39,9 @@ Client::Client(const std::string& addr, int portno) {
 }
 
 int Client::sendMessage(const std::string& payload) {
+    #ifdef DEBUG
+        fprintf(stderr, "Client::sendMessage: sending {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
+    #endif
     return send(
             this->socket_fd_,
             payload.c_str(),
@@ -61,14 +64,16 @@ std::string Client::listen(int timeout) {
     timeout_.tv_nsec = 0;
     timeout_.tv_sec = ((int)time(nullptr)) + timeout;
     retval = pthread_timedjoin_np(thread, nullptr, &timeout_);
+    #ifdef DEBUG
+        fprintf(stderr, "Client::listen: received {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
+    #endif
     // if the thread has joined in time, copy the response into the payload at the struct
     if (retval == 0)
         return payload;
     // thread has failed to join, force the exit at the thread and copy a timeout error at the payload
     pthread_cancel(thread);
     #ifdef DEBUG
-        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 0)
-            fprintf(stderr, "Client::listen: connection timed out\n");
+        fprintf(stderr, "Client::listen: connection timed out\n");
     #endif
     return std::string("-timeout<can not get message from orchestrator>");
 }
@@ -77,4 +82,9 @@ int Client::closeConnection() {
     int retval = this->sendMessage("+<exit>");
     close(this->socket_fd_);
     return retval;
+}
+
+int Client::closeConnectionWithoutMessage() {
+    close(this->socket_fd_);
+    return 0;
 }

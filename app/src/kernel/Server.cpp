@@ -1,21 +1,18 @@
 #include <regional-master/kernel/Server.hpp>
 
 void handleNextConnectionThreaded(handlerType handler, serverConnection client) {
-    char buffer[atoi(getenv("DDCC_SERVER_BUFF_SIZE"))];
+    char buffer[DDCC_SERVER_BUFF_SIZE];
     std::string payload;
 
     // read the message from the file descriptor until the terminating character appears
     do{
-        bzero(buffer, atoi(getenv("DDCC_SERVER_BUFF_SIZE")));
-        read(client.socket_fd, buffer, atoi(getenv("DDCC_SERVER_BUFF_SIZE")));
+        bzero(buffer, DDCC_SERVER_BUFF_SIZE);
+        read(client.socket_fd, buffer, DDCC_SERVER_BUFF_SIZE);
         payload.append(buffer);
     } while (buffer[strlen(buffer)-1]!='>');
 
     #ifdef DEBUG
-        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 3)
-            fprintf(stderr, "handleNextConnectionThreaded: received {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
-        else if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 0)
-            fprintf(stderr, "handleNextConnectionThreaded: received data from client\n");
+        fprintf(stderr, "Server::handleNextConnectionThreaded: received {%s}%lu\n", payload.c_str(), strlen(payload.c_str()));
     #endif
     // process the message via the handler
     std::string response = handler(payload);
@@ -28,10 +25,7 @@ void handleNextConnectionThreaded(handlerType handler, serverConnection client) 
             0
     );
     #ifdef DEBUG
-        if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 3)
-            fprintf(stderr, "handleNextConnectionThreaded: sending back {%s}:%lu\n", response.c_str(), strlen(response.c_str()));
-        else if (atoi(getenv("DDCC_DEBUG_LEVEL")) > 0)
-            fprintf(stderr, "handleNextConnectionThreaded: responding to client\n");
+        fprintf(stderr, "Server::handleNextConnectionThreaded: sending back {%s}:%lu\n", response.c_str(), strlen(response.c_str()));
     #endif
     // close the client socket
     close(client.socket_fd);

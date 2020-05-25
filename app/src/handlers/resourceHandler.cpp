@@ -17,5 +17,7 @@ std::string resourceHandler(const std::string& message) {
     // send the message to the working node
     client.sendMessage(message);
     // return the working node response
-    return client.listen();
+    response = client.listen();
+    client.closeConnectionWithoutMessage();
+    return response;
 }

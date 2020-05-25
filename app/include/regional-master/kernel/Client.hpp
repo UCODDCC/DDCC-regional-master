@@ -69,6 +69,8 @@ public:
      * @return error code, same as the send function
      */
     int closeConnection();
+
+    int closeConnectionWithoutMessage();
 };
 
 #endif
